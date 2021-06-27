@@ -1,0 +1,109 @@
+<template>
+  <div>
+    <div :class="isLoading ? 'loading' : ''"></div>
+
+    <div v-if="!isLoading">
+      <div class="event-header">
+        <span class="eyebrow">@{{ event.time }} on {{ event.date }}</span>
+        <h1 class="title">{{ event.title }}</h1>
+        <h5>Organized by {{ event.organizer }}</h5>
+        <h5>Category: {{ event.category }}</h5>
+      </div>
+      <BaseIcon name="map"><h2>Location</h2></BaseIcon>
+      <address>{{ event.location }}</address>
+      <h2>Event details</h2>
+      <p>{{ event.description }}</p>
+      <h2>
+        Attendees
+        <span class="badge -fill-gradient">{{
+          event.attendees ? event.attendees.length : 0
+        }}</span>
+      </h2>
+      <ul class="list-group">
+        <li
+          v-for="(attendee, index) in event.attendees"
+          :key="index"
+          class="list-item"
+        >
+          <b>{{ attendee.name }}</b>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>
+<script>
+import EventService from "@/services/EventService.js";
+export default {
+  props: ["id"],
+  data() {
+    return {
+      event: {},
+    };
+  },
+  computed: {
+    isLoading() {
+      if (Object.entries(this.event).length === 0) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+  },
+  created() {
+    EventService.getEvent(this.id)
+      .then((response) => {
+        this.event = response.data;
+      })
+      .catch((error) => {
+        console.log("There was an error:" + error);
+      });
+  },
+};
+</script>
+
+<style scoped>
+.loading {
+  margin: 10px 0;
+  height: 5px;
+  background: #39b982;
+  animation: loading 1s infinite;
+}
+@keyframes loading {
+  0% {
+    width: 0;
+  }
+  10% {
+    width: 10%;
+  }
+  20% {
+    width: 20%;
+  }
+  40% {
+    width: 40%;
+  }
+  70% {
+    width: 100%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+.location {
+  margin-bottom: 0;
+}
+.location > .icon {
+  margin-left: 10px;
+}
+.event-header > .title {
+  margin: 0;
+}
+.list-group {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.list-group > .list-item {
+  padding: 1em 0;
+  border-bottom: solid 1px #e5e5e5;
+}
+</style>
