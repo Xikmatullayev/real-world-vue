@@ -1,14 +1,29 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import EventService from '../services/EventService'
 
 Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
     user: {
-      id: 'abc123',
-      name: 'Lazizbek Xikmatullayev'
+      id: "qwe789",
+      name: "Lazizbek Xikmatullayev"
     },
+    attendees: [
+      {
+        id: "abc123",
+        name: "Adam Jahr"
+      },
+      {
+        id: "def456",
+        name: "Gregg Pollack"
+      },
+      {
+        id: "ghi789",
+        name: "Lazizbek Xikmatullayev"
+      }
+    ],
     categories: [
       'sustainability',
       'nature',
@@ -18,23 +33,21 @@ export default new Vuex.Store({
       'food',
       'community'
     ],
-    events: [
-      { id: 1, title: '...', organizer: '...'},
-      { id: 2, title: '...', organizer: '...'},
-      { id: 3, title: '...', organizer: '...'},
-    ]
+    events: []
   },
   mutations: {
+    ADD_EVENT(state, event) {
+      state.events.push(event);
+    }
   },
   actions: {
+    createEvent(context, event) {
+    return EventService.postEvent(event).then(() => {
+        context.commit("ADD_EVENT", event);
+      })
+    }
   },
   getters: {
-    getEventByID: state => id => {
-      return state.events.find(event => event.id === id)
-    },
-    catLength(state) {
-      return state.categories.length
-    } 
   },
   modules: {
   }
