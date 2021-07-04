@@ -5,10 +5,36 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    user: {
+      id: 'abc123',
+      name: 'Lazizbek Xikmatullayev'
+    },
+    categories: [
+      'sustainability',
+      'nature',
+      'animal welfare',
+      'housing',
+      'education',
+      'food',
+      'community'
+    ],
+    events: [
+      { id: 1, title: '...', organizer: '...'},
+      { id: 2, title: '...', organizer: '...'},
+      { id: 3, title: '...', organizer: '...'},
+    ]
   },
   mutations: {
   },
   actions: {
+  },
+  getters: {
+    getEventByID: state => id => {
+      return state.events.find(event => event.id === id)
+    },
+    catLength(state) {
+      return state.categories.length
+    } 
   },
   modules: {
   }

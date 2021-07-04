@@ -8,8 +8,6 @@
 </template>
 
 <script>
-// import feather from 'feather-icons'
-
 export default {
   props: {
     name: [String],
