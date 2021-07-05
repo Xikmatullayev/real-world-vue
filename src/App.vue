@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar />
-    <router-view />
+    <router-view :key="$route.fullPath" />
   </div>
 </template>
 <script>
@@ -13,6 +13,7 @@ export default {
 };
 </script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
 html {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
@@ -20,7 +21,7 @@ html {
 }
 body {
   margin: 0;
-  font-family: "Open Sans", sans-serif;
+  font-family: "RocknRoll One", "Open Sans", sans-serif;
   font-size: 16px;
   line-height: 1.5;
 }
@@ -52,7 +53,7 @@ h5,
 h6 {
   display: flex;
   align-items: center;
-  font-family: "Montserrat", sans-serif;
+  font-family: "RocknRoll One", "Montserrat", sans-serif;
 }
 h1 {
   font-size: 50px;
@@ -126,7 +127,7 @@ optgroup,
 select,
 textarea {
   display: inline-flex;
-  font-family: "Open sans", sans-serif;
+  font-family: "RocknRoll One", "Open sans", sans-serif;
   font-size: 100%;
   line-height: 1.15;
   margin: 0;

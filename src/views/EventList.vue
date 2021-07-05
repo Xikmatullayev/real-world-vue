@@ -2,41 +2,53 @@
   <div>
     <h1>Events Listing</h1>
     <div :class="isLoading ? 'loading' : ''"></div>
-    <EventCard v-for="event in events" :key="event.id" :event="event"/>
+    <EventCard v-for="event in events" :key="event.id" :event="event" />
+
+    <router-link
+      :class="page == 1 ? 'disabled' : ''"
+      :to="{ name: 'event-list', query: { page: page - 1 } }"
+      rel="prev"
+      >Prev Page</router-link
+    >
+
+    |
+    <router-link
+      :class="$store.state.totalEvents > page * 3 ? '' : 'disabled'"
+      :to="{ name: 'event-list', query: { page: page + 1 } }"
+      rel="next"
+      >Next Page</router-link
+    >
   </div>
 </template>
 
 <script>
-import EventService from '@/services/EventService.js'
-import EventCard from '@/components/EventCard.vue'
+import { mapState } from "vuex";
+import EventCard from "@/components/EventCard.vue";
 export default {
   components: {
     EventCard,
   },
-  data() {
-    return {
-      events: []
-    }
-  },
   computed: {
+    ...mapState(["events"]),
+    page() {
+      // What page we're currently on
+      return parseInt(this.$route.query.page) || 1;
+    },
     isLoading() {
-      if(this.events.length === 0) {
-        return true
+      if (this.events.length === 0) {
+        return true;
       } else {
-        return false
+        return false;
       }
-    }
+    },
   },
-  created () {
-    EventService.getEvents()
-    .then((response) => {
-      this.events = response.data
-    })
-    .catch((error) => {
-      console.log('There was an error:' + error)
-    })
+  created() {
+    this.$store.dispatch("fetchEvents", {
+      perPage: 3,
+      page: this.page,
+    });
   },
-}
+};
 </script>
 
 <style scoped>
@@ -65,5 +77,9 @@ export default {
   100% {
     width: 0%;
   }
+}
+.disabled {
+  pointer-events: none;
+  color: #9fd1ba;
 }
 </style>
