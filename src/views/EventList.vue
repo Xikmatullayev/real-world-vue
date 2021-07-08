@@ -2,7 +2,7 @@
   <div>
     <h1>Events Listing</h1>
     <div :class="isLoading ? 'loading' : ''"></div>
-    <EventCard v-for="event in events" :key="event.id" :event="event" />
+    <EventCard v-for="event in event.events" :key="event.id" :event="event" />
 
     <router-link
       :class="page == 1 ? 'disabled' : ''"
@@ -10,10 +10,9 @@
       rel="prev"
       >Prev Page</router-link
     >
-
     |
     <router-link
-      :class="$store.state.totalEvents > page * 3 ? '' : 'disabled'"
+      :class="event.totalEvents > page * 3 ? '' : 'disabled'"
       :to="{ name: 'event-list', query: { page: page + 1 } }"
       rel="next"
       >Next Page</router-link
@@ -22,20 +21,20 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
 import EventCard from "@/components/EventCard.vue";
+import { mapState } from "vuex";
 export default {
   components: {
     EventCard,
   },
   computed: {
-    ...mapState(["events"]),
+    ...mapState(["event"]),
     page() {
       // What page we're currently on
       return parseInt(this.$route.query.page) || 1;
     },
     isLoading() {
-      if (this.events.length === 0) {
+      if (this.event.events.length === 0) {
         return true;
       } else {
         return false;
