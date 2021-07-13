@@ -1,19 +1,22 @@
 <template>
   <div id="app">
     <NavBar />
+    <NotificationContainer />
     <router-view :key="$route.fullPath" />
   </div>
 </template>
 <script>
 import NavBar from "@/components/NavBar.vue";
+import NotificationContainer from "./components/NotificationContainer.vue";
 export default {
   components: {
     NavBar,
+    NotificationContainer,
   },
 };
 </script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=RocknRoll+One&display=swap");
 html {
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;

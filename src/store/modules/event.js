@@ -22,32 +22,46 @@ export default {
   },
   actions: {
     createEvent(context, event) {
-      return EventService.postEvent(event).then(() => {
-        context.commit("ADD_EVENT", event);
-      })
+      return EventService.postEvent(event)
+        .then(() => {
+          context.commit("ADD_EVENT", event);
+          const notification = {
+            type: "success",
+            message: "Your event has been created!"
+          }
+          context.dispatch("addNotification", notification);
+        })
     },
-    fetchEvents({ commit }, { perPage, page }) {
+    fetchEvents(context, { perPage, page }) {
       EventService.getEvents(perPage, page)
         .then((response) => {
-          commit("SET_EVENTS", response.data);
-          commit("SET_TOTAL_EVENTS", response.headers['x-total-count']);
+          context.commit("SET_EVENTS", response.data);
+          context.commit("SET_TOTAL_EVENTS", response.headers['x-total-count']);
         })
         .catch((error) => {
-          console.log("There was an error:" + error.response);
+          const notification = {
+            type: "error",
+            message: "There was a problem fetching events: " + error.message
+          }
+          context.dispatch("addNotification", notification);
         })
     },
-    fetchEvent({ commit, getters }, id) {
-      let event = getters.getEventById(id);
+    fetchEvent(context, id) {
+      let event = context.getters.getEventById(id);
 
       if (event) {
-        commit("SET_EVENT", event)
+        context.commit("SET_EVENT", event)
       } else {
         EventService.getEvent(id)
           .then((response) => {
-            commit("SET_EVENT", response.data);
+            context.commit("SET_EVENT", response.data);
           })
           .catch((error) => {
-            console.log("There was an error:" + error);
+            const notification = {
+              type: "error",
+              message: "There was a problem fetching an event: " + error.message
+            }
+            context.dispatch("addNotification", notification);
           });
       }
     }

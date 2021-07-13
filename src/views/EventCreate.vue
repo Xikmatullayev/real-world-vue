@@ -91,7 +91,6 @@ export default {
       this.$store
         .dispatch("createEvent", this.event)
         .then(() => {
-          console.log("Event created successfully");
           this.$router.push({
             name: "event-show",
             params: { id: this.event.id },
@@ -99,7 +98,11 @@ export default {
           this.event = this.createFreshEventObject();
         })
         .catch((error) => {
-          console.log("There was an error", error);
+          const notification = {
+            type: "error",
+            message: "There was a problem fetching events: " + error.message,
+          };
+          this.$store.dispatch("addNotification", notification);
         });
     },
   },
