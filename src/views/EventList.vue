@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Events Listing</h1>
-    <div :class="isLoading ? 'loading' : ''"></div>
+    <!-- <div :class="isLoading ? 'loading' : ''"></div> -->
     <EventCard v-for="event in event.events" :key="event.id" :event="event" />
 
     <router-link

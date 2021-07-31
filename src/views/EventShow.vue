@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="isLoading ? 'loading' : ''"></div>
+    <!-- <div :class="isLoading ? 'loading' : ''"></div> -->
 
     <div v-if="!isLoading">
       <div class="event-header">
